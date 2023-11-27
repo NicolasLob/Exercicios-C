@@ -1,0 +1,47 @@
+/* Faça um programa que leia um conjunto de números inteiros e armazene-os em um vetor, o qual
+representa um conjunto de dados. Em seguida, o programa deve ler novamente um novo conjunto
+de números reais com o mesmo tamanho do conjunto anterior e o armazene em um novo vetor, o
+qual representa um conjunto de pesos. Por fim, o programa deve retornar a média aritmética
+ponderada do conjunto de valores. */
+
+#include <stdio.h>
+
+int main() {
+    int tamanho;
+    
+    // Solicita o tamanho dos conjuntos
+    printf("Digite o tamanho dos conjuntos: ");
+    scanf("%d", &tamanho);
+
+    // Declaração dos vetores
+    int numerosInteiros[tamanho];
+    float pesos[tamanho];
+
+    // Leitura do conjunto de números inteiros
+    printf("Digite os numeros inteiros:\n");
+    for (int i = 0; i < tamanho; i++) {
+        scanf("%d", &numerosInteiros[i]);
+    }
+
+    // Leitura do conjunto de pesos
+    printf("Digite os pesos:\n");
+    for (int i = 0; i < tamanho; i++) {
+        scanf("%f", &pesos[i]);
+    }
+
+    // Cálculo da média aritmética ponderada
+    float somaProdutos = 0, somaPesos = 0;
+    for (int i = 0; i < tamanho; i++) {
+        somaProdutos += numerosInteiros[i] * pesos[i];
+        somaPesos += pesos[i];
+    }
+
+    if (somaPesos != 0) {
+        float mediaPonderada = somaProdutos / somaPesos;
+        printf("Media Aritmetica Ponderada: %.2f\n", mediaPonderada);
+    } else {
+        printf("Divisao por zero. Impossivel calcular a media.\n");
+    }
+
+    return 0;
+}
