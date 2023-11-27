@@ -1,0 +1,56 @@
+ /* Faça um programa que reproduza o comportamento da função realloc.
+ O programa deve ler um conjunto de valores inteiros, armazená-los 
+ em um vetor alocado dinamicamente e, em seguida, realocar um novo
+ espaço de memória que comporte o dobro de elementos, movendo todo 
+ conteúdo para este novo espaço de memória. */
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    int tamanhoInicial, novoTamanho;
+
+    // Solicita o tamanho inicial do vetor
+    printf("Digite o tamanho inicial do vetor: ");
+    scanf("%d", &tamanhoInicial);
+
+    // Aloca dinamicamente o vetor com o tamanho inicial
+    int *vetor = (int *)malloc(tamanhoInicial * sizeof(int));
+
+    if (vetor == NULL) {
+        printf("Falha na alocação de memória.\n");
+        return 1;
+    }
+
+    // Preenche o vetor com valores inteiros
+    printf("Digite os valores inteiros:\n");
+    for (int i = 0; i < tamanhoInicial; i++) {
+        scanf("%d", &vetor[i]);
+    }
+
+    // Solicita o novo tamanho do vetor
+    printf("Digite o novo tamanho desejado: ");
+    scanf("%d", &novoTamanho);
+
+    // Realoca dinamicamente o vetor com o novo tamanho
+    int *novoVetor = (int *)realloc(vetor, novoTamanho * sizeof(int));
+
+    if (novoVetor == NULL) {
+        printf("Falha na realocação de memória.\n");
+        free(vetor); // Libera o espaço de memória alocado anteriormente
+        return 1;
+    }
+
+    vetor = novoVetor; // Atualiza o ponteiro para o novo vetor
+
+    // Exibe o conteúdo do novo vetor
+    printf("Novo vetor:\n");
+    for (int i = 0; i < novoTamanho; i++) {
+        printf("%d ", vetor[i]);
+    }
+
+    // Libera o espaço de memória alocado
+    free(vetor);
+
+    return 0;
+}
