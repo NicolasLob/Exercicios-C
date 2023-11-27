@@ -1,0 +1,78 @@
+/* Faça um programa que, dadas as posições e dimensões de dois retângulos em um plano bidimensional,
+retorne a área de intersecção entre eles. Se não houver intersecção, deve retornar 0. 
+Use estruturas para representar os retângulos em 2D. ○ Exemplo: dado os retângulos abaixo,
+a área de intersecção é
+6. ■ r1 = { .y = 1, .x = 4, .largura = 3, .altura = 3 } ■ r2 = { .y = 0, .x = 5, .largura = 4, .altura = 3 } */
+
+#include <stdio.h>
+
+// Definição da estrutura para o retângulo
+struct Retangulo {
+    int x;        // Coordenada x do canto superior esquerdo
+    int y;        // Coordenada y do canto superior esquerdo
+    int largura;   // Largura do retângulo
+    int altura;    // Altura do retângulo
+};
+
+// Função para calcular a área de intersecção entre dois retângulos
+int calcularAreaInterseccao(struct Retangulo r1, struct Retangulo r2) {
+    // Calcula as coordenadas do canto inferior direito para ambos os retângulos
+    int x2_r1 = r1.x + r1.largura;
+    int y2_r1 = r1.y + r1.altura;
+    int x2_r2 = r2.x + r2.largura;
+    int y2_r2 = r2.y + r2.altura;
+
+    // Verifica se há intersecção
+    if (r1.x >= x2_r2 || r2.x >= x2_r1 || r1.y >= y2_r2 || r2.y >= y2_r1) {
+        return 0; // Não há intersecção
+    }
+
+    // Calcula as coordenadas do canto superior esquerdo e do canto inferior direito da área de intersecção
+    int x_interseccao_esq = (r1.x > r2.x) ? r1.x : r2.x;
+    int y_interseccao_esq = (r1.y > r2.y) ? r1.y : r2.y;
+    int x_interseccao_dir = (x2_r1 < x2_r2) ? x2_r1 : x2_r2;
+    int y_interseccao_dir = (y2_r1 < y2_r2) ? y2_r1 : y2_r2;
+
+    // Calcula e retorna a área de intersecção
+    return (x_interseccao_dir - x_interseccao_esq) * (y_interseccao_dir - y_interseccao_esq);
+}
+
+int main() {
+    // Declaração dos retângulos
+    struct Retangulo r1, r2;
+
+    // Solicita as informações do primeiro retângulo
+    printf("Digite as coordenadas e dimensoes do primeiro retangulo:\n");
+    printf("Coordenada x do canto superior esquerdo: ");
+    scanf("%d", &r1.x);
+    printf("Coordenada y do canto superior esquerdo: ");
+    scanf("%d", &r1.y);
+    printf("Largura do retangulo: ");
+    scanf("%d", &r1.largura);
+    printf("Altura do retangulo: ");
+    scanf("%d", &r1.altura);
+
+    // Solicita as informações do segundo retângulo
+    printf("\nDigite as coordenadas e dimensoes do segundo retangulo:\n");
+    printf("Coordenada x do canto superior esquerdo: ");
+    scanf("%d", &r2.x);
+    printf("Coordenada y do canto superior esquerdo: ");
+    scanf("%d", &r2.y);
+    printf("Largura do retangulo: ");
+    scanf("%d", &r2.largura);
+    printf("Altura do retangulo: ");
+    scanf("%d", &r2.altura);
+
+    // Calcula a área de intersecção
+    int areaInterseccao = calcularAreaInterseccao(r1, r2);
+
+    // Exibe o resultado
+    if (areaInterseccao > 0) {
+        printf("\nA área de intersecção entre os retângulos é: %d\n", areaInterseccao);
+    } else {
+        printf("\nNão há intersecção entre os retângulos.\n");
+    }
+
+    return 0;
+}
+
