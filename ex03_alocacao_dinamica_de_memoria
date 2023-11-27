@@ -1,0 +1,62 @@
+ /* Faça um programa que leia um conjunto de números inteiros e armazene-os 
+ em um vetor, o qual representa um conjunto de dados. Em seguida, o programa
+ deve ler novamente um novo conjunto de números reais com o mesmo tamanho 
+ do conjunto anterior e o armazene em um novo vetor, o qual representa um 
+ conjunto de pesos. Por fim, o programa deve retornar a média aritmética 
+ ponderada do conjunto de valores. Todos os vetores devem ser alocados
+ dinamicamente. */
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    int tamanho;
+
+    // Solicita o tamanho dos vetores
+    printf("Digite o tamanho dos vetores: ");
+    scanf("%d", &tamanho);
+
+    // Aloca dinamicamente os vetores
+    int *vetorInt = (int *)malloc(tamanho * sizeof(int));
+    float *vetorFloat = (float *)malloc(tamanho * sizeof(float));
+
+    if (vetorInt == NULL || vetorFloat == NULL) {
+        printf("Falha na alocação de memória.\n");
+        free(vetorInt);
+        free(vetorFloat);
+        return 1;
+    }
+
+    // Preenche o vetor de inteiros
+    printf("Digite os valores inteiros:\n");
+    for (int i = 0; i < tamanho; i++) {
+        scanf("%d", &vetorInt[i]);
+    }
+
+    // Preenche o vetor de reais
+    printf("Digite os valores reais:\n");
+    for (int i = 0; i < tamanho; i++) {
+        scanf("%f", &vetorFloat[i]);
+    }
+
+    // Calcula a média aritmética ponderada
+    float soma = 0, pesoTotal = 0;
+
+    for (int i = 0; i < tamanho; i++) {
+        soma += vetorInt[i] * vetorFloat[i];
+        pesoTotal += vetorFloat[i];
+    }
+
+    if (pesoTotal != 0) {
+        float mediaPonderada = soma / pesoTotal;
+        printf("A média aritmética ponderada é: %.2f\n", mediaPonderada);
+    } else {
+        printf("Divisão por zero. Não é possível calcular a média ponderada.\n");
+    }
+
+    // Libera o espaço de memória alocado
+    free(vetorInt);
+    free(vetorFloat);
+
+    return 0;
+}
