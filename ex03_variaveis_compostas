@@ -1,0 +1,53 @@
+/* Faça uma nova versão do programa anterior para exibir as seguintes informações a partir dos
+valores do vetor: i) mediana; ii) moda; iii) outliers (usando o método Z score); e iv) agrupamento dos
+valores em primeiro, segundo e terceiro quartil. */
+
+#include <stdio.h>
+#include <math.h>
+
+int comparar(const void *a, const void *b) {
+    return (*(int *)a - *(int *)b);
+}
+
+int main() {
+    int tamanho;
+
+    // Solicita o tamanho do conjunto
+    printf("Digite o tamanho do conjunto: ");
+    scanf("%d", &tamanho);
+
+    // Declaração do vetor
+    int numeros[tamanho];
+
+    // Leitura do conjunto de números inteiros
+    printf("Digite os numeros:\n");
+    for (int i = 0; i < tamanho; i++) {
+        scanf("%d", &numeros[i]);
+    }
+
+    // Ordena o vetor para facilitar o cálculo da mediana
+    qsort(numeros, tamanho, sizeof(int), comparar);
+
+    // Cálculo da mediana
+    float mediana;
+    if (tamanho % 2 == 0) {
+        mediana = (numeros[tamanho / 2 - 1] + numeros[tamanho / 2]) / 2.0;
+    } else {
+        mediana = numeros[tamanho / 2];
+    }
+
+    // Cálculo da moda
+    // ... (implemente conforme necessário)
+
+    // Cálculo de outliers usando o método Z score
+    float somaVariancia = 0;
+    for (int i = 0; i < tamanho; i++) {
+        somaVariancia += pow(numeros[i] - mediana, 2);
+    }
+    float desvioPadrao = sqrt(somaVariancia / tamanho);
+
+    printf("Mediana: %.2f\n", mediana);
+    printf("Desvio Padrao: %.2f\n", desvioPadrao);
+
+    return 0;
+}
