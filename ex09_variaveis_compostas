@@ -1,0 +1,158 @@
+/* Faça um programa para manter as informações de uma agenda de contatos utilizando estruturas e vetores.
+O programa deve conter um menu inicial com 5 opções: 
+i) incluir um novo contato; 
+ii) excluir um contato existente;
+iii) alterar um contato existente;
+iv) listar todos os contatos cadastrados; e 
+v) finalizar o programa. 
+A estrutura do contato deve conter um código de identificação, nome, e-mail e celular.  */
+
+#include <stdio.h>
+#include <string.h>
+
+// Definição da estrutura para o contato
+struct Contato {
+    int codigo;
+    char nome[50];
+    char email[50];
+    char celular[15];
+};
+
+// Função para incluir um novo contato no vetor
+void incluirContato(struct Contato contatos[], int *tamanho) {
+    printf("Digite o nome do contato: ");
+    scanf("%s", contatos[*tamanho].nome);
+
+    printf("Digite o e-mail do contato: ");
+    scanf("%s", contatos[*tamanho].email);
+
+    printf("Digite o celular do contato: ");
+    scanf("%s", contatos[*tamanho].celular);
+
+    contatos[*tamanho].codigo = *tamanho + 1; // Código de identificação único
+
+    (*tamanho)++;
+    printf("Contato incluido com sucesso.\n");
+}
+
+// Função para excluir um contato do vetor
+void excluirContato(struct Contato contatos[], int *tamanho) {
+    if (*tamanho == 0) {
+        printf("Nenhum contato cadastrado.\n");
+        return;
+    }
+
+    int codigo;
+    printf("Digite o codigo do contato a ser excluido: ");
+    scanf("%d", &codigo);
+
+    int indiceExcluir = -1;
+    for (int i = 0; i < *tamanho; i++) {
+        if (contatos[i].codigo == codigo) {
+            indiceExcluir = i;
+            break;
+        }
+    }
+
+    if (indiceExcluir != -1) {
+        // Desloca os contatos para cobrir a posição excluída
+        for (int i = indiceExcluir; i < *tamanho - 1; i++) {
+            contatos[i] = contatos[i + 1];
+        }
+
+        (*tamanho)--;
+        printf("Contato excluido com sucesso.\n");
+    } else {
+        printf("Contato nao encontrado.\n");
+    }
+}
+
+// Função para alterar um contato existente no vetor
+void alterarContato(struct Contato contatos[], int tamanho) {
+    if (tamanho == 0) {
+        printf("Nenhum contato cadastrado.\n");
+        return;
+    }
+
+    int codigo;
+    printf("Digite o codigo do contato a ser alterado: ");
+    scanf("%d", &codigo);
+
+    int indiceAlterar = -1;
+    for (int i = 0; i < tamanho; i++) {
+        if (contatos[i].codigo == codigo) {
+            indiceAlterar = i;
+            break;
+        }
+    }
+
+    if (indiceAlterar != -1) {
+        // Leitura das novas informações do contato
+        printf("Digite o novo nome do contato: ");
+        scanf("%s", contatos[indiceAlterar].nome);
+
+        printf("Digite o novo e-mail do contato: ");
+        scanf("%s", contatos[indiceAlterar].email);
+
+        printf("Digite o novo celular do contato: ");
+        scanf("%s", contatos[indiceAlterar].celular);
+
+        printf("Contato alterado com sucesso.\n");
+    } else {
+        printf("Contato nao encontrado.\n");
+    }
+}
+
+// Função para listar todos os contatos cadastrados
+void listarContatos(struct Contato contatos[], int tamanho) {
+    if (tamanho == 0) {
+        printf("Nenhum contato cadastrado.\n");
+        return;
+    }
+
+    printf("\nLista de Contatos Cadastrados:\n");
+    for (int i = 0; i < tamanho; i++) {
+        printf("Codigo: %d | Nome: %s | Email: %s | Celular: %s\n", contatos[i].codigo, contatos[i].nome, contatos[i].email, contatos[i].celular);
+    }
+}
+
+int main() {
+    struct Contato contatos[100];  // Supõe-se que haverá no máximo 100 contatos
+    int tamanho = 0;
+    int opcao;
+
+    do {
+        // Menu de opções
+        printf("\nMenu:\n");
+        printf("1 - Incluir novo contato\n");
+        printf("2 - Excluir contato existente\n");
+        printf("3 - Alterar contato existente\n");
+        printf("4 - Listar contatos cadastrados\n");
+        printf("5 - Finalizar programa\n");
+        printf("Escolha uma opcao: ");
+        scanf("%d", &opcao);
+
+        // Executa a opção escolhida
+        switch (opcao) {
+            case 1:
+                incluirContato(contatos, &tamanho);
+                break;
+            case 2:
+                excluirContato(contatos, &tamanho);
+                break;
+            case 3:
+                alterarContato(contatos, tamanho);
+                break;
+            case 4:
+                listarContatos(contatos, tamanho);
+                break;
+            case 5:
+                printf("Programa finalizado.\n");
+                break;
+            default:
+                printf("Opcao invalida. Tente novamente.\n");
+        }
+    } while (opcao != 5);
+
+    return 0;
+}
