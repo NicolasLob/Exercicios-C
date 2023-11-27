@@ -1,0 +1,103 @@
+/* Faça um programa para cadastrar veículos. O programa deve conter um menu inicial com opções para
+incluir um novo veículo, listar todos os veículos cadastrados e finalizar o programa. A estrutura do 
+veículo deve conter a placa, categoria (carro, moto, ônibus, caminhão,etc.), modelo e o ano.
+Não pode haver veículos com placas idênticas. 
+Use enumeradores para descrever as categorias dos veículos. */
+
+#include <stdio.h>
+#include <string.h>
+
+// Enumerador para as categorias dos veículos
+enum Categoria {
+    CARRO,
+    MOTO,
+    ONIBUS,
+    CAMINHAO
+};
+
+// Definição da estrutura para o veículo
+struct Veiculo {
+    char placa[8];
+    enum Categoria categoria;
+    char modelo[50];
+    int ano;
+};
+
+// Função para verificar se uma placa já existe no vetor de veículos
+int placaExistente(struct Veiculo veiculos[], int tamanho, char placa[]) {
+    for (int i = 0; i < tamanho; i++) {
+        if (strcmp(veiculos[i].placa, placa) == 0) {
+            return 1;  // Placa já existe
+        }
+    }
+    return 0;  // Placa não existe
+}
+
+// Função para incluir um novo veículo no vetor
+void incluirVeiculo(struct Veiculo veiculos[], int *tamanho) {
+    printf("Digite a placa do veiculo: ");
+    scanf("%s", veiculos[*tamanho].placa);
+
+    if (placaExistente(veiculos, *tamanho, veiculos[*tamanho].placa)) {
+        printf("Placa ja cadastrada. Inclusao cancelada.\n");
+        return;
+    }
+
+    printf("Digite a categoria do veiculo (0-Carro, 1-Moto, 2-Onibus, 3-Caminhao): ");
+    scanf("%d", &veiculos[*tamanho].categoria);
+    
+    printf("Digite o modelo do veiculo: ");
+    scanf("%s", veiculos[*tamanho].modelo);
+    
+    printf("Digite o ano do veiculo: ");
+    scanf("%d", &veiculos[*tamanho].ano);
+
+    (*tamanho)++;
+    printf("Veiculo cadastrado com sucesso.\n");
+}
+
+// Função para listar todos os veículos cadastrados
+void listarVeiculos(struct Veiculo veiculos[], int tamanho) {
+    if (tamanho == 0) {
+        printf("Nenhum veiculo cadastrado.\n");
+        return;
+    }
+
+    printf("\nLista de Veiculos Cadastrados:\n");
+    for (int i = 0; i < tamanho; i++) {
+        printf("Placa: %s | Categoria: %d | Modelo: %s | Ano: %d\n", veiculos[i].placa, veiculos[i].categoria, veiculos[i].modelo, veiculos[i].ano);
+    }
+}
+
+int main() {
+    struct Veiculo veiculos[100];  // Supõe-se que haverá no máximo 100 veículos
+    int tamanho = 0;
+    int opcao;
+
+    do {
+        // Menu de opções
+        printf("\nMenu:\n");
+        printf("1 - Incluir novo veiculo\n");
+        printf("2 - Listar veiculos cadastrados\n");
+        printf("3 - Finalizar programa\n");
+        printf("Escolha uma opcao: ");
+        scanf("%d", &opcao);
+
+        // Executa a opção escolhida
+        switch (opcao) {
+            case 1:
+                incluirVeiculo(veiculos, &tamanho);
+                break;
+            case 2:
+                listarVeiculos(veiculos, tamanho);
+                break;
+            case 3:
+                printf("Programa finalizado.\n");
+                break;
+            default:
+                printf("Opcao invalida. Tente novamente.\n");
+        }
+    } while (opcao != 3);
+
+    return 0;
+}
