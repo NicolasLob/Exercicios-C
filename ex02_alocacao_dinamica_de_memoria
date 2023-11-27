@@ -1,0 +1,55 @@
+/*Faça um programa que encontre o maior e menor inteiro dentro de um vetor 
+inteiros alocado dinamicamente. Em seguida, deve ser exibido o maior e 
+menor inteiro e a soma dos dois. Todas as operações de manipulação do 
+vetor deve ser realizado a partir da aritmética de ponteiros.*/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    int tamanho;
+
+    // Solicita o tamanho do vetor
+    printf("Digite o tamanho do vetor: ");
+    scanf("%d", &tamanho);
+
+    // Aloca dinamicamente o vetor
+    int *vetor = (int *)malloc(tamanho * sizeof(int));
+
+    if (vetor == NULL) {
+        printf("Falha na alocação de memória.\n");
+        return 1;
+    }
+
+    // Preenche o vetor com valores inteiros
+    printf("Digite os valores inteiros:\n");
+    for (int i = 0; i < tamanho; i++) {
+        scanf("%d", &vetor[i]);
+    }
+
+    // Encontra o maior e o menor inteiro usando aritmética de ponteiros
+    int *ptr = vetor;
+    int maior = *ptr, menor = *ptr, soma = 0;
+
+    for (int i = 0; i < tamanho; i++) {
+        soma += *ptr;
+        if (*ptr > maior) {
+            maior = *ptr;
+        }
+        if (*ptr < menor) {
+            menor = *ptr;
+        }
+        ptr++;
+    }
+
+    // Exibe os resultados
+    printf("Maior inteiro: %d\n", maior);
+    printf("Menor inteiro: %d\n", menor);
+    printf("Soma do maior e menor: %d\n", soma);
+
+    // Libera o espaço de memória alocado
+    free(vetor);
+
+    return 0;
+}
+
