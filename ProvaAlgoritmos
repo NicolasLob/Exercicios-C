@@ -1,0 +1,82 @@
+/* 
+Universidade do Estado de Santa Catarina
+Professor: Allan Rodrigo Leite
+Aluno: Nícolas Vinícius Lobo Morais
+Crie um programa para armazenar um conjunto de produtos, cuja 
+representação do produto deve ser realizada utilizando uma estrutura
+de dados.  A estrutura deve ser composta pelo nome do produto, quantidade,
+preço unitário e valor total. O programa deve solicitar a quantidade de 
+produtos, ler os dados da entrada padrão e armazená-los em um vetor de
+produtos. Descontos serão concedidos para cada produto com base na 
+quantidade de unidades compradas, respeitando as regras:
+i) até 5 unidades: sem desconto; 
+ii) 6 a 15 unidades: 10% de desconto;
+e acima de 15 unidades: 20% de desconto.
+Por fim, o programa deve mostrar na tela os nomes dos produtos que tiveram 
+desconto e a soma total de descontos concedidos. */
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// Definição da estrutura Produto
+struct Produto {
+    char nome[50];
+    int quantidade;
+    float precoUnitario;
+    float valorTotal;
+};
+
+// Função para calcular desconto com base na quantidade comprada
+float calcularDesconto(int quantidade) {
+    if (quantidade <= 5) {
+        return 0.0;
+    } else if (quantidade <= 15) {
+        return 0.1; // 10% de desconto
+    } else {
+        return 0.2; // 20% de desconto
+    }
+}
+
+// Função principal
+int main() {
+    int numProdutos;
+
+    printf("Digite a quantidade de produtos: ");
+    scanf("%d", &numProdutos);
+
+    // Alocação dinâmica de memória
+    struct Produto *produtos = (struct Produto *)malloc(numProdutos * sizeof(struct Produto));
+
+    // Leitura dos dados dos produtos
+    for (int i = 0; i < numProdutos; i++) {
+        printf("\nDigite os dados do produto %d:\n", i + 1);
+        printf("Nome: ");
+        scanf("%s", produtos[i].nome);
+        printf("Quantidade: ");
+        scanf("%d", &produtos[i].quantidade);
+        printf("Preço unitário: ");
+        scanf("%f", &produtos[i].precoUnitario);
+
+        produtos[i].valorTotal = produtos[i].quantidade * produtos[i].precoUnitario;
+    }
+
+    // Mostrar produtos com desconto e calcular descontos
+    float totalDescontos = 0.0;
+    printf("\nProdutos com desconto:\n");
+    for (int i = 0; i < numProdutos; i++) {
+        float desconto = calcularDesconto(produtos[i].quantidade);
+
+        if (desconto > 0.0) {
+            printf("Produto: %s\n", produtos[i].nome);
+            printf("Desconto: %.2f%%\n\n", desconto * 100);
+            totalDescontos += desconto * produtos[i].valorTotal;
+        }
+    }
+
+    printf("Total de descontos concedidos: R$ %.2f\n", totalDescontos);
+
+    // Liberação de memória alocada dinamicamente
+    free(produtos);
+
+    return 0;
+}
